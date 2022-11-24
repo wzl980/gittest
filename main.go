@@ -57,6 +57,11 @@ func main() {
 			"message": "success",
 		})
 	})
+	v1.GET("/secret", func(c *gin.Context) {
+		c.JSON(http.StatusOK, gin.H{
+			"secrets": userSecret,
+		})
+	})
 	err := r.Run(":8080")
 	if err != nil {
 		return
