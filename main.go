@@ -76,6 +76,9 @@ func main() {
 			"message": "success",
 		})
 	})
+	v1.POST("/secret", func(c *gin.Context) {
+
+	})
 	err := r.Run(":8080")
 	if err != nil {
 		return
