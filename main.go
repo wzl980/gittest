@@ -62,6 +62,20 @@ func main() {
 			"secrets": userSecret,
 		})
 	})
+	v1.DELETE("/secret", func(c *gin.Context) {
+		secret, ok := c.GetQuery("secret")
+		if !ok {
+			c.JSON(http.StatusBadRequest, gin.H{
+				"message": "params failed",
+			})
+			return
+		}
+
+		c.JSON(http.StatusOK, gin.H{
+			"secret":  secret,
+			"message": "success",
+		})
+	})
 	err := r.Run(":8080")
 	if err != nil {
 		return
