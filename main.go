@@ -1,6 +1,8 @@
 package main
 
 import (
+	"crypto/md5"
+	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -63,7 +65,7 @@ func main() {
 		})
 	})
 	v1.DELETE("/secret", func(c *gin.Context) {
-		secret, ok := c.GetQuery("secret")
+		secret, ok := c.GetQueryArray("secret")
 		if !ok {
 			c.JSON(http.StatusBadRequest, gin.H{
 				"message": "params failed",
@@ -71,14 +73,33 @@ func main() {
 			return
 		}
 
+		deleteList := make([]string, 0, len(secret))
+		for _, v := range secret {
+			secret := v
+			deleteList = append(deleteList, secret)
+		}
 		c.JSON(http.StatusOK, gin.H{
-			"secret":  secret,
+			"secret":  deleteList,
 			"message": "success",
 		})
 	})
 	v1.POST("/secret", func(c *gin.Context) {
-
+		key, ok := c.GetPostForm("key")
+		if !ok {
+			c.JSON(http.StatusBadRequest, gin.H{
+				"message": "params failed",
+			})
+			return
+		}
+		hash := md5.New()
+		data := hash.Sum([]byte(key))
+		dataStr := fmt.Sprintf("%x", data)
+		c.JSON(http.StatusOK, gin.H{
+			"secret":  dataStr,
+			"message": "success",
+		})
 	})
+
 	err := r.Run(":8080")
 	if err != nil {
 		return
