@@ -18,7 +18,45 @@ func main() {
 			"data": userList,
 		})
 	})
+	v1.POST("/user", func(c *gin.Context) {
+		user := User{}
+		if err := c.ShouldBindJSON(&user); err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{
+				"message": "body field failed",
+			})
+			return
+		}
 
+		c.JSON(http.StatusOK, gin.H{
+			"message": "success",
+		})
+	})
+	v1.DELETE("/user", func(c *gin.Context) {
+		iphoneNumber, ok := c.GetQuery("iphone")
+		if !ok {
+			c.JSON(http.StatusBadRequest, gin.H{
+				"message": "phone number is null",
+			})
+			return
+		}
+		c.JSON(http.StatusOK, gin.H{
+			"number":  iphoneNumber,
+			"message": "success",
+		})
+	})
+	v1.PUT("/user", func(c *gin.Context) {
+		user := User{}
+		err := c.ShouldBindJSON(&user)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{
+				"message": "json field failed",
+			})
+			return
+		}
+		c.JSON(http.StatusOK, gin.H{
+			"message": "success",
+		})
+	})
 	err := r.Run(":8080")
 	if err != nil {
 		return
