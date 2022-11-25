@@ -100,7 +100,12 @@ func main() {
 			"info":    "save ok ",
 		})
 	})
-
+	v1.GET("/hello", func(c *gin.Context) {
+		c.JSON(http.StatusOK, gin.H{
+			"code":    200,
+			"message": "ok",
+		})
+	})
 	err := r.Run(":8080")
 	if err != nil {
 		return
