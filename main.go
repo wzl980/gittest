@@ -97,6 +97,7 @@ func main() {
 		c.JSON(http.StatusOK, gin.H{
 			"secret":  dataStr,
 			"message": "success",
+			"info":    "save ok ",
 		})
 	})
 
